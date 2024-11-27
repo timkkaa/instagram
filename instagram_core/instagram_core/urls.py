@@ -19,10 +19,14 @@ from django.conf.urls.static import static
 from django.urls import path
 from django.conf import settings
 
-from instagram_core.user.views import RegistrationView
+from user.views import RegistrationView, LoginView, MakeLoginView, MakeRegistrationView, ProfileView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration/', RegistrationView.as_view(), name='registration-url'),
+    path('make-registration/', MakeRegistrationView.as_view(), name='make-registration-url'),
+    path('login/', LoginView.as_view(), name='login-url'),
+    path('make-login/', MakeLoginView.as_view(), name='make-login-url'),
+    path('profile/', ProfileView.as_view(), name='profile-url'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
