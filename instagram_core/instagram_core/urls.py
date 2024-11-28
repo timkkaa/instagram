@@ -21,6 +21,7 @@ from django.conf import settings
 
 from user.views import RegistrationView, LoginView, MakeLoginView, MakeRegistrationView, ProfileView
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration/', RegistrationView.as_view(), name='registration-url'),

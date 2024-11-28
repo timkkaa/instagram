@@ -1,10 +1,14 @@
+from sqlite3 import IntegrityError
+
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 
-from user.models import User
+
+from .models import User
 
 
 class MakeLoginView(View):
@@ -33,32 +37,29 @@ class LoginView(TemplateView):
     template_name = 'login.html'
 
 
-
 class MakeRegistrationView(TemplateView):
     template_name = 'sign_up.html'
+
     def post(self, request, *args, **kwargs):
-        username = self.request.POST.get('name')
-        lastname = self.request.POST.get('lastname')
-        firstname = self.request.POST.get('firstname')
-        password = self.request.POST.get('password')
-
-        if not   username or not lastname or not firstname or not password:
-            print(username, lastname, firstname, password)
-            render(request, template_name='sign_up.html')
-
-        user = User(username=username, lastname=lastname, firstname=firstname)
-        user.password = make_password(password=password)
+        username = request.POST.get('user_name')
+        firstname = request.POST.get('first_name')
+        lastname = request.POST.get('last_name')
+        password = request.POST.get('password')
+        if not username or not firstname or not lastname or not password:
+            return render(request, self.template_name, {'error': 'Все поля обязательны для заполнения'})
+        if User.objects.filter(user_name=username).exists():
+            return render(request, self.template_name, {'error': 'Такой пользователь уже существует'})
+        hashed_password = make_password(password)
+        user = User(user_name=username, first_name=firstname, last_name=lastname, password=hashed_password)
 
         try:
             user.save()
-        except:
-            return render(request, template_name='login.html', context={'current_user': self.request.user})
-        login(self.request, user)
-        context = {
-            'current_user': self.request.user
-        }
+        except Exception as e:
+            return render(request, self.template_name, {'error': f'Ошибка при создании пользователя: {e}'})
 
-        return render(request, template_name='login.html', context=context)
+        login(request, user)
+
+        return redirect('login-url')
 
 class RegistrationView(TemplateView):
     template_name = 'sign_up.html'
