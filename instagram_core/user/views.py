@@ -1,10 +1,14 @@
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
+
 from django.views import View
 from django.views.generic import TemplateView
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 
 from user.models import CustomUser
+
 
 
 class MakeLoginView(View):
@@ -28,7 +32,6 @@ class MakeLoginView(View):
 
 class LoginView(TemplateView):
     template_name = 'login.html'
-
 
 
 class MakeRegistrationView(TemplateView):
