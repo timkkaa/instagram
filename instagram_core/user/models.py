@@ -1,10 +1,22 @@
+from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 
-class User(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    username = models.CharField(max_length=150, unique=True)
-    password = models.CharField(max_length=128)
-    class Meta:
-        verbose_name_plural = 'Пользователи'
-        verbose_name = 'Пользователь'
+from user.manager import CustomUserManager
+
+
+class CustomUser(AbstractBaseUser):
+    DoesNotExist = None
+    username = models.CharField(max_length=255, unique=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    def __str__(self):
+        return self.username

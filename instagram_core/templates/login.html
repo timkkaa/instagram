@@ -44,20 +44,20 @@
                     <div class="logo">
                         <img src="{% static 'images/logo.png' %}" alt="Instagram logo">
                     </div>
-                    <form>
+                    <form action="{% url 'profile-url' %}">
+                        {% csrf_token %}
+
                         <div>
                             <input type="text" name="username" id="emai" placeholder="username">
                         </div>
                         <div>
                             <input type="password" name="password" id="password" placeholder="password">
                         </div>
-
-                    </form>
-                    <a href="home.html">
-                        <button class="log_btn">
+                        <button class="log_btn" type="submit">
                             Log in
                         </button>
-                    </a>
+                    </form>
+                    <a href="home.html"></a>
                     <div class="other-ways">
                         <div class="seperator">
                             <span class="ligne"></span>

@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from django.conf import settings
 
-from user.views import RegistrationView, LoginView, MakeLoginView, MakeRegistrationView, ProfileView
+from user.views import RegistrationView, LoginView, MakeLoginView, MakeRegistrationView, ProfileView, HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +28,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login-url'),
     path('make-login/', MakeLoginView.as_view(), name='make-login-url'),
     path('profile/', ProfileView.as_view(), name='profile-url'),
+    path('home/', HomeView.as_view(), name='home-url'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
